@@ -94,6 +94,5 @@ if __name__ == "__main__":
     #print(core('input.txt', 1))
     
     # Part 2 solution
-    print(core('example.txt', 2))
-    #print(core('input.txt', 2))
-        
+    #print(core('example.txt', 2))
+    print(core('input.txt', 2))
