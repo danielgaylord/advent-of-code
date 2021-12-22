@@ -41,30 +41,35 @@ def quantum_die(p1_place, p2_place, spaces, faces, to_win):
     wins = [0, 0]
 
     @lru_cache(maxsize=None)
-    def take_turn(cur_score, opp_score, cur_place, opp_place):
-        if cur_score >= to_win:
+    def take_turn(p1_score, p2_score, p1_place, p2_place, p1_turn):
+        if p1_score >= to_win:
             return 1, 0
-        if opp_score >= to_win:
+        if p2_score >= to_win:
             return 0, 1
 
-        tot_cur_wins = 0
-        tot_opp_wins = 0
+        tot_p1_wins = 0
+        tot_p2_wins = 0
 
         for roll1 in range(1, faces + 1):
             for roll2 in range(1, faces + 1):
                 for roll3 in range(1, faces + 1):
                     total_move = roll1 + roll2 + roll3
-                    new_place = cur_place + total_move
-                    new_place %= spaces
-                    new_score = cur_score + new_place + 1
-                    opp_wins, cur_wins = take_turn(opp_score, new_score, opp_place, new_place)
-                    tot_cur_wins += cur_wins
-                    tot_opp_wins += opp_wins
+                    if p1_turn:
+                        new_place = p1_place + total_move
+                        new_place %= spaces
+                        new_score = p1_score + new_place + 1
+                        p1_wins, p2_wins = take_turn(new_score, p2_score, new_place, p2_place, not p1_turn)
+                    else:
+                        new_place = p2_place + total_move
+                        new_place %= spaces
+                        new_score = p2_score + new_place + 1
+                        p1_wins, p2_wins = take_turn(p1_score, new_score, p1_place, new_place, not p1_turn)
+                    tot_p1_wins += p1_wins
+                    tot_p2_wins += p2_wins
         
-        return tot_cur_wins, tot_opp_wins
-
+        return tot_p1_wins, tot_p2_wins
     
-    return take_turn(0, 0, p1_place, p2_place)
+    return take_turn(0, 0, p1_place, p2_place, True)
 
 def core(file, part):
     p1_start, p2_start = parse_input(file)
