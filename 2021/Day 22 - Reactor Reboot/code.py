@@ -18,6 +18,7 @@ def parse_input(file):
             steps.append(step)
     return steps
 
+# Flip all cuboids in the given x, y, z dimensions on or off
 def flip_cuboid(on, x_dim, y_dim, z_dim, bit):
     for x in range(x_dim[0], x_dim[1] + 1):
         for y in range(y_dim[0], y_dim[1] + 1):
@@ -33,6 +34,7 @@ def flip_cuboid(on, x_dim, y_dim, z_dim, bit):
 def core(file, part):
     steps = parse_input(file)
     
+    # Create a set of 'on' cuboids part 1 only cares about those in -50 - 50 dimensions
     on = set()
     for step in steps:
         x_dim = step["x_dim"]
@@ -67,5 +69,5 @@ if __name__ == "__main__":
     print(core('input.txt', 1))
     
     # Part 2 solution
-    #print(core('example3.txt', 2))
+    print(core('example3.txt', 2))
     #print(core('input.txt', 2))
