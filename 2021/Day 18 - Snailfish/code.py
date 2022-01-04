@@ -52,7 +52,7 @@ def parse_input(file):
 def core(file, part):
     numbers = parse_input(file)
     sn = SnailNumber("[[[[0,7],4],[[7,8],[6,0]]],[8,1]]")
-    return sn.magnitude()
+    return sn
 
 # Practicing unit testing on given test input and expected results
 class TestCases(unittest.TestCase):
