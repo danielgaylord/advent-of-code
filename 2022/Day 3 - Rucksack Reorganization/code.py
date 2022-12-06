@@ -9,18 +9,25 @@ def parse_input(file):
 
 def core(file):
     rucksacks = parse_input(file)
+    
+    # Part 1: Find common item in first and second half of each line
     prioritySum = 0
-
     for rucksack in rucksacks:
         compartmentSize = len(rucksack) // 2
-        sackHash = set(rucksack[0:compartmentSize])
-        for item in rucksack[compartmentSize:]:
-            if item in sackHash:
-                priority = ord(item.lower()) - 96
-                if item.isupper():
-                    priority += 26
-                prioritySum += priority
-                break   
+        item = list(set(rucksack[0:compartmentSize]) & set(rucksack[compartmentSize:]))[0]
+        priority = ord(item.lower()) - 96
+        if item.isupper():
+            priority += 26
+        prioritySum += priority 
+
+    # Part 2: Find common item in each set of 3 lines
+    prioritySum = 0
+    for i in range(len(rucksacks) // 3):
+        badge = list(set(rucksacks[3 * i]) & set(rucksacks[3 * i + 1]) & set(rucksacks[3 * i + 2]))[0]
+        priority = ord(badge.lower()) - 96
+        if badge.isupper():
+            priority += 26
+        prioritySum += priority
 
     return prioritySum
 
@@ -30,16 +37,16 @@ class TestCases(unittest.TestCase):
         self.assertEqual(core('example.txt'), 157)
     
     def test_part2(self):
-        self.assertEqual(core('example.txt'), 0)
+        self.assertEqual(core('example.txt'), 70)
 
 if __name__ == "__main__":
     # unittest.main(verbosity=2)
     
     # Part 1 solution
-    print(core('example.txt'))
+    # print(core('example.txt'))
     # print(core('input.txt'))
     
     # Part 2 solution
     # print(core('example.txt'))
-    # print(core('input.txt'))
+    print(core('input.txt'))
         
